@@ -5,8 +5,8 @@ import { useEffect, useMemo, useState } from "react";
 type DayTask = {
   id: string;
   day: string;
-  title: string;
-  voltage: number;
+  task: string;
+  points: number;
   category: "mission" | "boss" | "rest" | "buffer";
 };
 
@@ -21,58 +21,58 @@ const roadmap: WeekTrack[] = [
     week: 1,
     title: "Python Foundations & Hardware Prep",
     tasks: [
-      { id: "w1-mon-fri-python", day: "Mon-Fri", title: "Python basic variables, loops, OOP scripts", voltage: 50, category: "mission" },
-      { id: "w1-sat-esp32", day: "Sat", title: "Wire up physical ESP32 and check local DHT22 serial output", voltage: 100, category: "boss" },
-      { id: "w1-sun-rest", day: "Sun", title: "Rest/Review", voltage: 0, category: "rest" },
+      { id: "w1-mon-fri-python", day: "Mon-Fri", task: "Python basic variables, loops, OOP scripts", points: 50, category: "mission" },
+      { id: "w1-sat-esp32", day: "Sat", task: "Wire up physical ESP32 and check local DHT22 serial output", points: 100, category: "boss" },
+      { id: "w1-sun-rest", day: "Sun", task: "Rest/Review", points: 0, category: "rest" },
     ],
   },
   {
     week: 2,
     title: "Finish Python Cert & Start Cisco IoT",
     tasks: [
-      { id: "w2-mon-cert", day: "Mon", title: "Take assessment and claim Python Cert", voltage: 50, category: "mission" },
-      { id: "w2-tue-thu-cisco", day: "Tue-Thu", title: "Cisco NetAcad Modules 1-4", voltage: 50, category: "mission" },
-      { id: "w2-fri-sat-mqtt", day: "Fri-Sat", title: "ESP32 WiFi to HiveMQ MQTT data pipeline active", voltage: 100, category: "boss" },
-      { id: "w2-sun-rest", day: "Sun", title: "Rest", voltage: 0, category: "rest" },
+      { id: "w2-mon-cert", day: "Mon", task: "Take assessment and claim Python Cert", points: 50, category: "mission" },
+      { id: "w2-tue-thu-cisco", day: "Tue-Thu", task: "Cisco NetAcad Modules 1-4", points: 50, category: "mission" },
+      { id: "w2-fri-sat-mqtt", day: "Fri-Sat", task: "ESP32 WiFi to HiveMQ MQTT data pipeline active", points: 100, category: "boss" },
+      { id: "w2-sun-rest", day: "Sun", task: "Rest", points: 0, category: "rest" },
     ],
   },
   {
     week: 3,
     title: "Finish Cisco & Springboard IoT + Dashboard Live",
     tasks: [
-      { id: "w3-mon-wed-cisco-boss", day: "Mon-Wed", title: "Cisco IoT Modules 5-8 + Final Exam Boss Fight", voltage: 150, category: "boss" },
-      { id: "w3-wed-fri-springboard", day: "Wed-Fri", title: "Springboard IoT track setup", voltage: 50, category: "mission" },
-      { id: "w3-sat-telemetry", day: "Sat", title: "ThingSpeak telemetry dashboard & Telegram alert bot live", voltage: 100, category: "boss" },
-      { id: "w3-sun-rest", day: "Sun", title: "Rest", voltage: 0, category: "rest" },
+      { id: "w3-mon-wed-cisco-boss", day: "Mon-Wed", task: "Cisco IoT Modules 5-8 + Final Exam Boss Fight", points: 150, category: "boss" },
+      { id: "w3-wed-fri-springboard", day: "Wed-Fri", task: "Springboard IoT track setup", points: 50, category: "mission" },
+      { id: "w3-sat-telemetry", day: "Sat", task: "ThingSpeak telemetry dashboard & Telegram alert bot live", points: 100, category: "boss" },
+      { id: "w3-sun-rest", day: "Sun", task: "Rest", points: 0, category: "rest" },
     ],
   },
   {
     week: 4,
     title: "IBM Badge, SSCS Project & Project Polish",
     tasks: [
-      { id: "w4-mon-ibm", day: "Mon", title: "IBM SkillsBuild IoT/AI Foundations single-day badge", voltage: 100, category: "boss" },
-      { id: "w4-tue-wed-mqtt-logging", day: "Tue-Wed", title: "Apply MQTT logging script patterns to SSCS Arduino workspace", voltage: 100, category: "mission" },
-      { id: "w4-thu-fri-oled-video", day: "Thu-Fri", title: "Solder local SSD1306 OLED layout and record portfolio demo video", voltage: 100, category: "mission" },
-      { id: "w4-sat-gsa", day: "Sat", title: "Construct GSA content outline", voltage: 0, category: "buffer" },
-      { id: "w4-sun-rest", day: "Sun", title: "Rest", voltage: 0, category: "rest" },
+      { id: "w4-mon-ibm", day: "Mon", task: "IBM SkillsBuild IoT/AI Foundations single-day badge", points: 100, category: "boss" },
+      { id: "w4-tue-wed-mqtt-logging", day: "Tue-Wed", task: "Apply MQTT logging script patterns to SSCS Arduino workspace", points: 100, category: "mission" },
+      { id: "w4-thu-fri-oled-video", day: "Thu-Fri", task: "Solder local SSD1306 OLED layout and record portfolio demo video", points: 100, category: "mission" },
+      { id: "w4-sat-gsa", day: "Sat", task: "Construct GSA content outline", points: 0, category: "buffer" },
+      { id: "w4-sun-rest", day: "Sun", task: "Rest", points: 0, category: "rest" },
     ],
   },
   {
     week: 5,
     title: "Buffer, Content Creation & Final Push",
     tasks: [
-      { id: "w5-mon-buffer", day: "Mon", title: "System Buffer Mode - clear lingering Tech Debt tasks", voltage: 0, category: "buffer" },
-      { id: "w5-tue-thu-launch", day: "Tue-Thu", title: "Draft killer LinkedIn launch post and slide layout for TinkerHub", voltage: 0, category: "mission" },
-      { id: "w5-wed-isolation-forest", day: "Wed", title: "Optional data science layer: fit scikit-learn Isolation Forest logic to CSV logs", voltage: 100, category: "boss" },
-      { id: "w5-fri-portfolio", day: "Fri", title: "Update PDF portfolio master profiles", voltage: 0, category: "mission" },
-      { id: "w5-sat-sun-rest", day: "Sat-Sun", title: "Sacred rest before college re-entry", voltage: 0, category: "rest" },
+      { id: "w5-mon-buffer", day: "Mon", task: "System Buffer Mode - clear lingering Tech Debt tasks", points: 0, category: "buffer" },
+      { id: "w5-tue-thu-launch", day: "Tue-Thu", task: "Draft killer LinkedIn launch post and slide layout for TinkerHub", points: 0, category: "mission" },
+      { id: "w5-wed-isolation-forest", day: "Wed", task: "Optional data science layer: fit scikit-learn Isolation Forest logic to CSV logs", points: 100, category: "boss" },
+      { id: "w5-fri-portfolio", day: "Fri", task: "Update PDF portfolio master profiles", points: 0, category: "mission" },
+      { id: "w5-sat-sun-rest", day: "Sat-Sun", task: "Sacred rest before college re-entry", points: 0, category: "rest" },
     ],
   },
 ];
 
 const allTasks = roadmap.flatMap((week) => week.tasks);
-const scoreFor = (taskId: string) => allTasks.find((task) => task.id === taskId)?.voltage ?? 0;
-const labelFor = (taskId: string) => allTasks.find((task) => task.id === taskId)?.title ?? taskId;
+const scoreFor = (taskId: string) => allTasks.find((task) => task.id === taskId)?.points ?? 0;
+const labelFor = (taskId: string) => allTasks.find((task) => task.id === taskId)?.task ?? taskId;
 
 const initialDebtTasks = allTasks
   .filter((task) => task.category !== "rest" && task.category !== "buffer")
@@ -110,7 +110,15 @@ export default function HomePage() {
     [currentWeek],
   );
 
-  const weekTasks = activeWeek.tasks;
+  const currentWeekData = useMemo(
+    () => ({
+      ...activeWeek,
+      days: activeWeek.tasks,
+    }),
+    [activeWeek],
+  );
+
+  const weekTasks = currentWeekData.days;
 
   const weekCompletedCount = useMemo(
     () => weekTasks.filter((task) => completedTasks.includes(task.id)).length,
@@ -160,13 +168,13 @@ export default function HomePage() {
     if (isComplete) {
       setCompletedTasks((current) => current.filter((taskId) => taskId !== task.id));
       setTechDebtTasks((current) => (current.includes(task.id) ? current : [...current, task.id]));
-      setTotalVoltage((current) => Math.max(0, current - task.voltage));
+      setTotalVoltage((current) => Math.max(0, current - task.points));
       return;
     }
 
     setCompletedTasks((current) => [...current, task.id]);
     setTechDebtTasks((current) => current.filter((taskId) => taskId !== task.id));
-    setTotalVoltage((current) => current + task.voltage);
+    setTotalVoltage((current) => current + task.points);
   };
 
   const clearDebtTask = (taskId: string) => {
@@ -230,7 +238,7 @@ export default function HomePage() {
                 Week {activeWeek.week}
               </h2>
               <p className="mt-2 font-mono text-sm leading-6 text-[#b8d5e6]">
-                {activeWeek.title}
+                {currentWeekData.title}
               </p>
 
               <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-4">
@@ -255,7 +263,7 @@ export default function HomePage() {
                   Next objective
                 </p>
                 <p className="mt-2 font-mono text-sm leading-6 text-white">
-                  {nextTask ? nextTask.title : "This week is complete."}
+                  {nextTask ? nextTask.task : "This week is complete."}
                 </p>
               </div>
             </div>
@@ -312,7 +320,7 @@ export default function HomePage() {
                   Active Week
                 </p>
                 <h2 className="mt-2 font-display text-2xl uppercase tracking-[0.08em] text-white">
-                  {activeWeek.title}
+                  {currentWeekData.title}
                 </h2>
                 <p className="mt-2 font-mono text-sm leading-6 text-[#b8d5e6]">
                   Mark a task complete to add voltage and remove it from tech debt.
@@ -329,18 +337,18 @@ export default function HomePage() {
             </div>
 
             <div className="mt-5 grid gap-4">
-              {weekTasks.map((task) => {
-                const isComplete = completedTasks.includes(task.id);
-                const isRest = task.category === "rest";
-                const isBoss = task.category === "boss";
-                const isBuffer = task.category === "buffer";
-                const isDebt = techDebtTasks.includes(task.id) && !isComplete;
+              {currentWeekData.days.map((dayItem) => {
+                const isComplete = completedTasks.includes(dayItem.id);
+                const isRest = dayItem.category === "rest";
+                const isBoss = dayItem.category === "boss";
+                const isBuffer = dayItem.category === "buffer";
+                const isDebt = techDebtTasks.includes(dayItem.id) && !isComplete;
 
                 return (
                   <button
-                    key={task.id}
+                    key={dayItem.id}
                     type="button"
-                    onClick={() => toggleTask(task)}
+                    onClick={() => toggleTask(dayItem)}
                     disabled={isRest}
                     className={[
                       "rounded-3xl border p-5 text-left transition",
@@ -355,7 +363,7 @@ export default function HomePage() {
                       <div className="max-w-3xl">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="rounded-full border border-white/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.2em] text-[#8bb6c8]">
-                            {task.day}
+                            {dayItem.day}
                           </span>
                           {isBoss ? (
                             <span className="rounded-full border border-[#ff00ff]/20 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.2em] text-[#f0a7ff]">
@@ -375,13 +383,13 @@ export default function HomePage() {
                         </div>
 
                         <h3 className="mt-4 font-display text-xl uppercase tracking-[0.06em] text-white">
-                          {task.title}
+                          {dayItem.task}
                         </h3>
                       </div>
 
                       <div className="flex shrink-0 items-center gap-3">
                         <span className="rounded-full border border-white/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-white">
-                          {isRest ? "Rest" : `${task.voltage.toString().padStart(3, "0")}V`}
+                          {isRest ? "Rest" : `${dayItem.points.toString().padStart(3, "0")}V`}
                         </span>
                         <span
                           className={[
