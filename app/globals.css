@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #050511;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(0, 243, 255, 0.06), transparent 30%),
+    linear-gradient(180deg, rgba(8, 16, 34, 0.75), rgba(5, 5, 17, 1) 38%),
+    #050511;
+  color: #d7fbff;
+  font-family: "IBM Plex Mono", "Fira Code", monospace;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(rgba(0, 243, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.12) 1px, transparent 1px);
+  background-size: 84px 84px;
+  animation: pulseGrid 20s linear infinite;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(rgba(255, 255, 255, 0.015) 50%, transparent 50%);
+  background-size: 100% 5px;
+  opacity: 0.04;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.clip-panel {
+  clip-path: polygon(0 14px, 14px 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+
+.clip-button {
+  clip-path: polygon(0 10px, 10px 0, calc(100% - 16px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 12px));
+}
+
+.scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 25%, rgba(0, 243, 255, 0.18) 50%, transparent 75%);
+  animation: sweep 1.8s linear infinite;
+  pointer-events: none;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #00f3ff #09091c;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #09091c;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #00f3ff;
+}
+
+.neo-panel {
+  border: 1px solid rgba(0, 243, 255, 0.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.neo-magenta {
+  border: 1px solid rgba(255, 0, 255, 0.3);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.neo-red {
+  border: 1px solid rgba(255, 0, 60, 0.32);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.neo-green {
+  border: 1px solid rgba(57, 255, 20, 0.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.neo-inset {
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.03);
+}
